@@ -13,7 +13,7 @@ jobs:
         run: |
           ~/yandex-cloud/bin/yc config set token ${{ secrets.YACLOUD_TOKEN }}
           CLOUD_ID=$(~/yandex-cloud/bin/yc resource-manager cloud get --name ${{secrets.CLOUD_NAME}} | awk '/^id:/ {print $2}')
-          FOLDER_ID=$(~/yandex-cloud/bin/yc resource-manager folder get --name ${{ secrets.YACLOUD_FOLDER_NAME }})
+          FOLDER_ID=$(~/yandex-cloud/bin/yc resource-manager folder get --name ${{ secrets.YACLOUD_FOLDER_NAME }}) | awk '/^id:/ {print $2}')
           ~/yandex-cloud/bin/yc config set cloud-id $CLOUD_ID
           ~/yandex-cloud/bin/yc config set folder-id $FOLDER_ID
       - name: Create source archive
