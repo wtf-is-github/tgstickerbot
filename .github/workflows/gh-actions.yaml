@@ -13,6 +13,6 @@ jobs:
         run: zip -r deploy-archive.zip ./src
       - name: Deploy cloud function
         run: |
-          source "/home/runner/.bashrc
+          source "/home/runner/.bashrc"
           echo "current: default\nprofiles:\n  default:\n    token: ${{ secrets.YACLOUD_TOKEN }}\n" > ~/.config/yandex-cloud/config.yaml
           yc serverless function version create --function-id=${{ secrets.FUNCTION_NAME}} --runtime python311   --entrypoint main.handler --memory 128m --execution-timeout 5s --source-path ./deploy-archive.zip
