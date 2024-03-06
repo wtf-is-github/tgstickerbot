@@ -1,0 +1,16 @@
+name: Push and Deploy Serverless function
+on: push
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Create source archive
+        run: zip -r deploy-archive.zip ./src
+      - name: Install Yandex Cloud CLI tool and deploy
+        run: |
+          curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
+          # CLOUDID=$(curl -s https://resource-manager.api.cloud.yandex.net/resource-manager/v1/clouds )
+          echo "current: default\nprofiles:\n  default:\n    token: ${{ secrets.YACLOUD_TOKEN }}\n" > ~/.config/yandex-cloud/ config.yaml
+          yc serverless function version create --function-id=${{ secrets.FUNCTION_NAME}} --runtime python311   --entrypoint main.handler --memory 128m --execution-timeout 5s --source-path ./deploy-archive.zip
